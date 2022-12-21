@@ -1,39 +1,36 @@
 #include <curses.h>
 #include <cstdlib>
 #include <cstring>
-#include <chrono>
-#include <thread>
 
-using std::chrono::milliseconds;
-using std::this_thread::sleep_for;
-
-void init();
-void lyricprint(const char *line);
+void initWindow(WINDOW *win);
+void lyrics(WINDOW *lyricWin);
+void lyricprint(const char *line, WINDOW *lyricWin, int row);
 
 int main(void)
 {
-    init();
+    // ncurses init
+    initscr();
+    
+    WINDOW *lyricWin = newwin(28, 48, 0, 0);
+    initWindow(lyricWin);
 
-    addstr("Still Alive with NCurses\n");
-    refresh();
-
-    lyricprint("This was a triumph");
+    lyrics(lyricWin);
 
     getch();
     endwin();
     return EXIT_SUCCESS;
 }
 
-void init()
+void initWindow(WINDOW *win)
 {
-    initscr();
 
+    // color init
     if (has_colors())
     {
         if (start_color() == OK)
         {
             init_pair(1, COLOR_YELLOW, COLOR_BLACK);
-            attrset(COLOR_PAIR(1));
+            wattrset(win, COLOR_PAIR(1));
         }
         else
         {
@@ -46,15 +43,35 @@ void init()
         addstr("No colors capable!\n");
         refresh();
     }
+
+    box(win, '|', '-');
+
+    return;
 }
 
-void lyricprint(const char *line)
+void lyrics(WINDOW *lyricWin)
 {
+    int row = 1;
+
+    lyricprint("This was a triumph.", lyricWin, row);
+    row++;
+    lyricprint("I'm making a note here:\n|HUGE SUCCESS", lyricWin, row);
+    row++;
+
+    return;
+}
+
+void lyricprint(const char *line, WINDOW *lyricWin, int row)
+{
+    wmove(lyricWin, row, 1);
     for (unsigned int i = 0; i < strlen(line); i++)
     {
-        addch(line[i]);
-        refresh();
-        sleep_for(milliseconds(50));
+        waddch(lyricWin, line[i]);
+        wrefresh(lyricWin);
+        napms(100);
     }
+    
+    napms(2000);
+
     return;
 }
