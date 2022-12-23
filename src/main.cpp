@@ -10,7 +10,7 @@ int main(void)
 {
     // ncurses init
     initscr();
-    
+
     WINDOW *lyricWin = newwin(28, 48, 0, 0);
     initWindow(lyricWin);
 
@@ -51,12 +51,25 @@ void initWindow(WINDOW *win)
 
 void lyrics(WINDOW *lyricWin)
 {
-    int row = 1;
+    int row = 0;
 
+    row++;
     lyricprint("This was a triumph.", lyricWin, row);
     row++;
-    lyricprint("I'm making a note here:\n|HUGE SUCCESS", lyricWin, row);
+    lyricprint("I'm making a note here:\n HUGE SUCCESS", lyricWin, row);
     row++;
+    row++;
+    lyricprint("I'ts hard to overstate my satisfaction.", lyricWin, row);
+    row++;
+
+    row++;
+    lyricprint("Aperture Science.", lyricWin, row);
+    row++;
+    lyricprint("We do what we must, because we can.", lyricWin, row);
+    row++;
+    lyricprint("For the good of all of us,", lyricWin, row);
+    row++;
+    lyricprint("Except the ones who are dead.", lyricWin, row);
 
     return;
 }
@@ -67,10 +80,11 @@ void lyricprint(const char *line, WINDOW *lyricWin, int row)
     for (unsigned int i = 0; i < strlen(line); i++)
     {
         waddch(lyricWin, line[i]);
+        box(lyricWin, '|', '-');
         wrefresh(lyricWin);
         napms(100);
     }
-    
+
     napms(2000);
 
     return;
