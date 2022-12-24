@@ -6,8 +6,8 @@
 #define MINIAUDIO_IMPLEMENTATION
 #include "../includes/miniaudio.h"
 
-void initWindow(WINDOW *win);
-void lyrics(WINDOW *lyricWin);
+void initWindow(WINDOW *win, bool drawBox);
+void lyrics(WINDOW *lyricWin, WINDOW *artWin);
 void lyricprint(const char *line, WINDOW *lyricWin, int row, int napMs, int linewaitms);
 void lyricprint(const char *line, WINDOW *lyricWin, int row);
 
@@ -34,12 +34,17 @@ int main(void)
         return -1;
     }
 
+    WINDOW *lyricWin = newwin(38, 48, 0, 0);
+    initWindow(lyricWin, true);
 
-    WINDOW *lyricWin = newwin(38, 50, 0, 0);
-    initWindow(lyricWin);
+    WINDOW *artWin = newwin(19, 48, 19, 48);
+    initWindow(artWin, false);
+
+    WINDOW *creditsWin = newwin(19, 48, 0, 48);
+    initWindow(creditsWin, true);
 
     ma_engine_play_sound(&maEngine, "stillalive.mp3", NULL);
-    lyrics(lyricWin);
+    lyrics(lyricWin, artWin);
 
     endwin();
     ma_engine_uninit(&maEngine);
@@ -47,7 +52,7 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-void initWindow(WINDOW *win)
+void initWindow(WINDOW *win, bool drawBox)
 {
 
     // color init
@@ -70,12 +75,16 @@ void initWindow(WINDOW *win)
         refresh();
     }
 
-    box(win, '|', '-');
+    if (drawBox)
+    {
+        box(win, '|', '-');
+    }
+    wrefresh(win);
 
     return;
 }
 
-void lyrics(WINDOW *lyricWin)
+void lyrics(WINDOW *lyricWin, WINDOW *artWin)
 {
     int row = 0;
 
@@ -96,6 +105,9 @@ void lyrics(WINDOW *lyricWin)
     lyricprint("I'ts hard to overstate\n my satisfaction.", lyricWin, row, 100, 2500);
     row++;
     row++;
+
+    waddstr(artWin, "aperture logo here!");
+    wrefresh(artWin);
     lyricprint("Aperture Science.", lyricWin, row);
     row++;
     lyricprint("We do what we must\n because we can.", lyricWin, row);
@@ -121,7 +133,6 @@ void lyrics(WINDOW *lyricWin)
     row++;
     lyricprint("still alive.", lyricWin, row);
     row++;
-
 
     return;
 }
