@@ -35,13 +35,11 @@ int main(void)
     }
 
 
-    WINDOW *lyricWin = newwin(28, 48, 0, 0);
+    WINDOW *lyricWin = newwin(38, 50, 0, 0);
     initWindow(lyricWin);
 
     ma_engine_play_sound(&maEngine, "stillalive.mp3", NULL);
     lyrics(lyricWin);
-
-    getch();
 
     endwin();
     ma_engine_uninit(&maEngine);
@@ -95,7 +93,8 @@ void lyrics(WINDOW *lyricWin)
     lyricprint("I'm making a note here:\n HUGE SUCCESS", lyricWin, row);
     row++;
     row++;
-    lyricprint("I'ts hard to overstate my satisfaction.", lyricWin, row, 100, 2500);
+    lyricprint("I'ts hard to overstate\n my satisfaction.", lyricWin, row, 100, 2500);
+    row++;
     row++;
     lyricprint("Aperture Science.", lyricWin, row);
     row++;
