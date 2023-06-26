@@ -5,9 +5,11 @@
 
 #define MINIAUDIO_IMPLEMENTATION
 #include "../includes/miniaudio.h"
+#include "text.h"
 
 void initWindow(WINDOW *win, bool drawBox);
 void lyrics(WINDOW *lyricWin, WINDOW *artWin);
+void checkArt(WINDOW *artWin, int row);
 void lyricprint(const char *line, WINDOW *lyricWin, int row, int napMs, int linewaitms);
 void lyricprint(const char *line, WINDOW *lyricWin, int row);
 
@@ -86,66 +88,33 @@ void initWindow(WINDOW *win, bool drawBox)
 
 void lyrics(WINDOW *lyricWin, WINDOW *artWin)
 {
-    int row = 0;
-
-    row++;
-    lyricprint("Forms FORM-29827281-12:", lyricWin, row, 30, 3000);
-    row++;
-    lyricprint("Test Assessment Report", lyricWin, row, 30, 3000);
-    row++;
-    row++;
-    row++;
-
-    row++;
-    lyricprint("This was a triumph.", lyricWin, row);
-    row++;
-    lyricprint("I'm making a note here:\n HUGE SUCCESS", lyricWin, row);
-    row++;
-    row++;
-    lyricprint("I'ts hard to overstate\n my satisfaction.", lyricWin, row, 100, 2500);
-    row++;
-    row++;
-
-    waddstr(artWin, "aperture logo here!");
-    wrefresh(artWin);
-    lyricprint("Aperture Science.", lyricWin, row);
-    row++;
-    lyricprint("We do what we must\n because we can.", lyricWin, row);
-    row++;
-    row++;
-    lyricprint("For the good of all of us,", lyricWin, row, 100, 1300);
-    row++;
-    lyricprint("Except the ones who are dead.", lyricWin, row, 50, 500);
-    row++;
-    napms(1000);
-    row++;
-    lyricprint("But there's no sense crying\n over every mistake.", lyricWin, row, 50, 750);
-    row++;
-    row++;
-    lyricprint("You just keep on trying\n till you run out of cake.", lyricWin, row, 50, 750);
-    row++;
-    row++;
-    lyricprint("And the Science gets done.", lyricWin, row, 50, 750);
-    row++;
-    lyricprint("And you make a neat gun.", lyricWin, row, 50, 750);
-    row++;
-    lyricprint("For the people who are.", lyricWin, row, 50, 750);
-    row++;
-    lyricprint("still alive.", lyricWin, row);
-    row++;
+    for (int row = 1; row < 25; row++)
+    {
+        checkArt(artWin, row);
+        lyricprint(lyricList[row], lyricWin, row, letterDelays[row], lineDelays[row]);
+    }
 
     return;
 }
 
-void lyricprint(const char *line, WINDOW *lyricWin, int row, int napMs, int linewaitms)
+void checkArt(WINDOW *artWin, int row)
+{
+    if(row >= 11)
+    {
+        wclear(artWin);
+        waddstr(artWin, "Aperture logo here!");
+        wrefresh(artWin);
+    }
+}
+
+void lyricprint(const char *line, WINDOW *lyricWin, int row, int charWaitMs, int linewaitms)
 {
     wmove(lyricWin, row, 1);
     for (unsigned int i = 0; i < strlen(line); i++)
     {
         waddch(lyricWin, line[i]);
-        box(lyricWin, '|', '-');
         wrefresh(lyricWin);
-        napms(napMs);
+        napms(charWaitMs);
     }
 
     napms(linewaitms);
