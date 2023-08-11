@@ -88,10 +88,17 @@ void initWindow(WINDOW *win, bool drawBox)
 
 void lyrics(WINDOW *lyricWin, WINDOW *artWin)
 {
-    for (int row = 1; row < 25; row++)
+    for(int page = 0; page <= 2; page++)
     {
-        checkArt(artWin, row);
-        lyricprint(lyricList[row], lyricWin, row, letterDelays[row], lineDelays[row]);
+        for (int row = 1; row <= 24; row++)
+        {
+            int line = row + (page*24);
+            checkArt(artWin, row);
+            lyricprint(lyricList[line], lyricWin, row, letterDelays[line], lineDelays[line]);
+        }
+        wclear(lyricWin);
+        box(lyricWin, '|', '-');
+        wrefresh(lyricWin);
     }
 
     return;
@@ -107,12 +114,12 @@ void checkArt(WINDOW *artWin, int row)
     }
 }
 
-void lyricprint(const char *line, WINDOW *lyricWin, int row, int charWaitMs, int linewaitms)
+void lyricprint(const char *lyric, WINDOW *lyricWin, int row, int charWaitMs, int linewaitms)
 {
     wmove(lyricWin, row, 1);
-    for (unsigned int i = 0; i < strlen(line); i++)
+    for (unsigned int i = 0; i < strlen(lyric); i++)
     {
-        waddch(lyricWin, line[i]);
+        waddch(lyricWin, lyric[i]);
         wrefresh(lyricWin);
         napms(charWaitMs);
     }
@@ -120,9 +127,4 @@ void lyricprint(const char *line, WINDOW *lyricWin, int row, int charWaitMs, int
     napms(linewaitms);
 
     return;
-}
-
-void lyricprint(const char *line, WINDOW *lyricWin, int row)
-{
-    lyricprint(line, lyricWin, row, 100, 2000);
 }
