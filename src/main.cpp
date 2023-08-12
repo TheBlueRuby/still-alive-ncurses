@@ -17,6 +17,7 @@ int main(void)
 {
     // ncurses init
     initscr();
+    use_default_colors();
 
     // sound init
     ma_result maResult;
@@ -62,7 +63,7 @@ void initWindow(WINDOW *win, bool drawBox)
     {
         if (start_color() == OK)
         {
-            init_pair(1, COLOR_YELLOW, COLOR_BLACK);
+            init_pair(1, COLOR_YELLOW, -1); //-1 is transparent
             wattrset(win, COLOR_PAIR(1));
         }
         else
