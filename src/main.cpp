@@ -5,6 +5,7 @@
 
 #define MINIAUDIO_IMPLEMENTATION
 #include "../includes/miniaudio.h"
+
 #include "text.h"
 
 void initWindow(WINDOW *win, bool drawBox);
@@ -37,13 +38,13 @@ int main(void)
         return -1;
     }
 
-    WINDOW *lyricWin = newwin(38, 48, 0, 0);
+    WINDOW *lyricWin = newwin(38, 54, 0, 0);
     initWindow(lyricWin, true);
 
-    WINDOW *artWin = newwin(19, 48, 19, 48);
+    WINDOW *artWin = newwin(20, 42, 19, 58);
     initWindow(artWin, false);
 
-    WINDOW *creditsWin = newwin(19, 48, 0, 48);
+    WINDOW *creditsWin = newwin(19, 48, 0, 54);
     initWindow(creditsWin, true);
 
     ma_engine_play_sound(&maEngine, "stillalive.mp3", NULL);
@@ -110,7 +111,27 @@ void checkArt(WINDOW *artWin, int row)
     if(row >= 11)
     {
         wclear(artWin);
-        waddstr(artWin, "Aperture logo here!");
+        waddstr(artWin, "\
+              .,-:;//;:=,\n\
+          . :H@@@MM@M#H/.,+%;,\n\
+       ,/X+ +M@@M@MM%=,-%HMMM@X/,\n\
+     -+@MM; $M@@MH+-,;XMMMM@MMMM@+-\n\
+    ;@M@@M- XM@X;. -+XXXXXHHH@M@M#@/.\n\
+  ,%MM@@MH ,@%=             .---=-=:=,.\n\
+  =@#@@@MX.,                -%HX$$%%%:;\n\
+ =-./@M@M$                   .;@MMMM@MM:\n\
+ X@/ -$MM/                    . +MM@@@M$\n\
+,@M@H: :@:                    . =X#@@@@-\n\
+,@@@MMX, .                    /H- ;@M@M=\n\
+.H@@@@M@+,                    %MM+..%#$.\n\
+ /MMMM@MMH/.                  XM@MH; =;\n\
+  /%+%$XHH@$=              , .H@@@@MX,\n\
+   .=--------.           -%H.,@@@@@MX,\n\
+   .%MM@@@HHHXX$$$%+- .:$MMX =M@@MM%.\n\
+     =XMMM@MM@MM#H;,-+HMM@M+ /MMMX=\n\
+       =%@M@M#@$-.=$@MM@@@M; %M%=\n\
+         ,:+$+-,/H#MMMMMMM@= =,\n\
+               =++%%%%+/:-.");
         wrefresh(artWin);
     }
 }
